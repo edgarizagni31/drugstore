@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use NumberFormatter;
@@ -32,5 +33,12 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo '$formattedAmount' ?>";
         });
 
+        Blade::directive('hasPermissionsTo', function ($roles) {
+            return "<?php if (in_array(Auth::user()->role->name, explode('|', $roles))): ?>";
+        });
+        
+        Blade::directive('endhasPermissionsTo', function () {
+            return "<?php endif; ?>";
+        });
     }
 }
