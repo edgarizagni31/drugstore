@@ -16,14 +16,20 @@ class UserAction implements ShouldQueue
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $user;
+    public $action;
+    public $actionable;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(array $action, User $user)
+    public function __construct($user, $action, $actionable)
     {
-        //
+        $this->user = $user;
+        $this->action = $action;
+        $this->actionable = $actionable;
     }
- 
+
 }

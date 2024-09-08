@@ -1,88 +1,58 @@
 <x-layouts.dashboard>
-    <header class="mb-4">
-        <div class="flex justify-between items-center mb-4">
-            <h1 class="text-2xl text-stone-900 font-sans"> Ventas </h1>
+    <div class="container mx-auto p-6">
+        <header class="flex justify-between items-center mb-4">
+            <h1 class="text-3xl font-bold mb-4">Ventas Registradas</h1>
 
-            <a href="{{ route('sales.new') }}" class="btn btn-primary text-base">Registrar</a>
-        </div>
 
-        <p class="text-base text-stone-800">
-            Una lista de todas las ventas del dia {{ date('d-m-Y') }}.
-        </p>
-    </header>
+            <a href="{{ route('sales.create') }}" class="btn btn-primary">Registrar venta</a>
+        </header>
 
-    <div class="overflow-x-auto mb-4">
+        @if (session('success'))
+            <div class="mb-4 p-4 bg-green-200 text-green-800 rounded">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <table class="table">
-            <thead class="text-base">
-                <tr class="text-stone-400">
-                    <th>Fecha y Hora </th>
-                    <th>Cantidad de medicamentos</th>
-                    <th>Precio Total</th>
-                    <th>Estado</th>
-
-                    <th></th>
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border-b">ID de Caja</th>
+                    <th class="py-2 px-4 border-b">Tipo de Evento</th>
+                    <th class="py-2 px-4 border-b">Datos del Evento</th>
+                    <th class="py-2 px-4 border-b">Fecha de Creación</th>
+                    <th class="py-2 px-4 border-b">Acciones</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach ($sales as $sale)
+                    <tr>
+                        <td class="py-2 px-4 border-b">{{ $sale->aggregate_id }}</td>
+                        <td class="py-2 px-4 border-b">{{ $sale->event_type }}</td>
+                        <td class="py-2 px-4 border-b">{{ $sale->event_data }}</td>
+                        <td class="py-2 px-4 border-b">{{ $sale->created_at }}</td>
+                        <td class="py-2 px-4 border-b">
+                            <a href={{route('tickets.index', $sale->id)}} class="btn btn-secondary mx-2">Tickets</a>
 
-                <tr class="text-base">
-                    <td>
-                        {{ date('d-m-Y H:i') }}
-                    </td>
-                    <td class="text-stone-900">
-                        2
-                    </td>
-                    <td class="text-stone-900">
-                        @money(5)
-                    </td>
-                    <td class="text-stone-900">
-                        <div class="badge badge-warning gap-2">
-                            Pendiente
-                        </div>
-                    </td>
-                    <th class="text-stone-900">
-                        <button class="btn btn-ghost btn-sm">Detalles</button>
-                    </th>
-                </tr>
-                <tr class="text-base">
-                    <td>
-                        {{ date('d-m-Y H:i', strtotime(date("Y-m-d H:i:s")) - (5*60)) }}
-                    </td>
-                    <td class="text-stone-900">
-                        4
-                    </td>
-                    <td class="text-stone-900">@money(3.2)</td>
-                    <td class="text-stone-900">
-                        <div class="badge badge-success gap-2">
-                            Pagado
-                        </div>
-                    </td>
-                    <th class="text-stone-900">
-                        <button class="btn btn-ghost btn-sm">Detalles</button>
-                    </th>
-                </tr>
-
-
-                <tr class="text-base">
-                    <td>
-                        {{ date('d-m-Y H:i', strtotime(date("Y-m-d H:i:s")) - (7*60)) }}
-                    </td>
-                    <td class="text-stone-900">
-                        1
-                    </td>
-                    <td class="text-stone-900">@money(32)</td>
-                    <td class="text-stone-900">
-                        <div class="badge badge-info gap-2">
-                            Despachado
-                        </div>
-                    </td>
-                    <th class="text-stone-900">
-                        <button class="btn btn-ghost btn-sm">Detalles</button>
-                    </th>
-                </tr>
-
+                            @if ($sale->event_type === 'PENDIENTE')
+                                <form action="{{ route('sales.updateStatus', [$sale, 'PAGADA']) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-success">Marcar como Pagada</button>
+                                </form>
+                            @endif
+                            @if ($sale->event_type === 'PAGADA')
+                                <form action="{{ route('sales.updateStatus', [$sale, 'DESPACHADA']) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-info">Marcar como Despachada</button>
+                                </form>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
-
         </table>
     </div>
 </x-layouts.dashboard>

@@ -9,6 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 class Sale extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'aggregate_id',
+        'event_type',
+        'event_data',
+    ];
+    public $timestamps = false;
+
     protected $cast = [
         "event_data" => "array"
     ];

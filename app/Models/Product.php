@@ -9,6 +9,17 @@ class Product extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'unit_value',
+        'total_value',
+        'quantity',
+        'stock_actual',
+        'due_date',
+        'supplier_id',
+        'category_id',
+    ];
+
     public function stockReports() {
         return $this->hasMany(StockReport::class);
     }

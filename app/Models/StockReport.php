@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class StockReport extends Model
 {
     use HasFactory;
+    protected $fillable = ['quanty', 'status', 'product_id'];
 
 
     public function action()

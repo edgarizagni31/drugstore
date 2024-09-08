@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Log;
 use NumberFormatter;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::directive('hasPermissionsTo', function ($roles) {
-            return "<?php if (in_array(Auth::user()->role->name, explode('|', $roles))): ?>";
+            return "<?php if ( $roles = '*' || in_array(Auth::user()->role->name, explode('|', $roles)) ): ?>";
         });
         
         Blade::directive('endhasPermissionsTo', function () {

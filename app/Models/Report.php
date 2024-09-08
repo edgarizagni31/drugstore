@@ -9,6 +9,13 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 class Report extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'aggregate_id',
+        'event_type',
+        'event_data',
+        'created_at',
+    ];
+    public $timestamps = false;
 
     protected $cast = [
         "event_data" => "array"

@@ -16,7 +16,25 @@ return [
         ],
         [
             'label' => 'Inventario',
-            'route' => 'stocktaking.index',
+            'route' => 'products.index',
+            'type' => 'item',
+            'roles' => 'ADMIN|INVENTARIO|ALMACENERO'
+        ],
+        [
+            'label' => 'Productos',
+            'route' => 'sales.index',
+            'type' => 'principal',
+            'roles' => '*'
+        ],
+        [
+            'label' => 'Categorias',
+            'route' => 'categories.index',
+            'type' => 'item',
+            'roles' => 'ADMIN|INVENTARIO|ALMACENERO'
+        ],
+        [
+            'label' => 'Provedores',
+            'route' => 'suppliers.index',
             'type' => 'item',
             'roles' => 'ADMIN|INVENTARIO|ALMACENERO'
         ],
@@ -28,7 +46,7 @@ return [
         ],
         [
             'label' => 'Reportes',
-            'route' => 'report.index',
+            'route' => 'reports.index',
             'type' => 'item',
             'roles' => 'ADMIN|CAJERO'
         ],
