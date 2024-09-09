@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "dockerfile": "Dockerfile",
+    "build": {
+        "context": ".",
+        "dockerfile": "Dockerfile"
+    },
+    "deploy": {
+        "stage": "production",
+        "services": [
+            {
+                "name": "my-php-app",
+                "port": 9000
+            }
+        ]
+    }
+}
