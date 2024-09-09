@@ -1,0 +1,12 @@
+# Usa una imagen base de PHP 7.4
+FROM php:7.4-fpm
+
+WORKDIR /var/www/html
+
+COPY . .
+
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+
+EXPOSE 9000
+
+CMD ["php-fpm"]
