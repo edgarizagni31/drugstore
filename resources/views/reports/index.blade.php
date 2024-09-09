@@ -3,7 +3,6 @@
         <div class="flex justify-between items-center mb-4">
             <h1 class="text-2xl text-stone-900 font-sans"> Reportes de venta </h1>
 
-            <a href="{{ route('reports.create') }}" class="btn btn-primary mb-4">Abrir Caja</a>
         </div>
 
     </header>
@@ -29,10 +28,8 @@
                     <th> {{ $report->event_type }} </th>
                     <th>  
 
-                        <button class="btn btn-secondary">Ventas</button>
+                        <a href={{route('reports.sales', $report->id)}} class="btn btn-secondary">Ventas</a>
                     </th>
-
-                    
                 @endforeach
 
 

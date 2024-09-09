@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\UserAction;
 use App\Models\Product;
+use App\Models\Report;
 use App\Models\Sale;
 use App\Models\Ticket;
 use Auth;
@@ -83,6 +84,24 @@ class SaleController extends Controller
         $validStatuses = ['PENDIENTE', 'PAGADA', 'DESPACHADA'];
         if (!in_array($status, $validStatuses)) {
             return redirect()->back()->with('error', 'Estado inválido.');
+        }
+
+        if ($status === 'PAGADA') {
+            $report = Report::where('event_type', 'ABIERTO')->latest()->first();
+    
+            if ($report) {
+                $eventDataSale = json_decode($sale->event_data, true);
+                $amount = $eventDataSale['amount'];
+                $eventData = json_decode($report->event_data, true);
+                $eventData['current_balance'] += $amount;
+                $eventData['total_sales'] += $amount;
+
+                array_push($eventData['sales'], $sale->id);
+    
+                $report->update([
+                    'event_data' => json_encode($eventData),
+                ]);
+            }
         }
 
         $sale->update([

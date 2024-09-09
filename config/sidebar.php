@@ -64,7 +64,7 @@ return [
         ],
         [
             'label' => 'Roles',
-            'route' => 'users.index',
+            'route' => 'roles.index',
             'type' => 'item',
             'roles' => 'ADMIN'
         ],

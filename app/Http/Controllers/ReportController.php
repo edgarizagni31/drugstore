@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\UserAction;
 use App\Models\Report;
+use App\Models\Sale;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -14,16 +15,9 @@ class ReportController extends Controller
     public function index()
     {
 
-        $latestReports = Report::select('reports.*')
-            ->join(
-                DB::raw('(SELECT aggregate_id, MAX(created_at) as latest_created_at FROM reports GROUP BY aggregate_id) as latest'),
-                function ($join) {
-                    $join->on('reports.aggregate_id', '=', 'latest.aggregate_id')
-                        ->on('reports.created_at', '=', 'latest.latest_created_at');
-                }
-            )
-            ->get();
-        return view('reports.index', [ 'reports' => $latestReports]);
+        $latestReports = Report::all();
+
+        return view('reports.index', ['reports' => $latestReports]);
     }
 
     public function create()
@@ -42,44 +36,64 @@ class ReportController extends Controller
 
         $report = Report::create([
             'aggregate_id' => $aggregateId,
-            'event_type' => 'open',
+            'event_type' => 'ABIERTO',
             'event_data' => json_encode([
                 'initial_balance' => $initialBalance,
                 'current_balance' => $initialBalance,
-                'total_sales' => 0
+                'total_sales' => 0,
+                'sales' => []
             ]),
         ]);
 
         UserAction::dispatch(Auth::user(), 'OPEN_CASH_REGISTER', $report);
 
-        return redirect()->route('reports.index')
+        return redirect()->route('cash.index')
             ->with('success', 'Caja abierta exitosamente. Utiliza el ID de la caja para cerrar la caja.');
     }
 
-    public function close(Request $request)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'aggregate_id' => 'required|string',
-        ]);
+        $report = Report::find($id);
 
-        $aggregateId = $request->input('aggregate_id');
-
-        $openReport = Report::where('aggregate_id', $aggregateId)
-            ->where('event_type', 'open')
-            ->first();
-
-        if (!$openReport) {
-            return redirect()->route('reports.closeForm')
-                ->with('error', 'ID de caja no encontrado.');
+        if (!$report) {
+            return redirect()->route('reports.index')
+                ->with('error', 'No se encontró el reporte con el ID proporcionado.');
         }
 
-        Report::create([
-            'aggregate_id' => $aggregateId,
-            'event_type' => 'close',
-            'event_data' => json_encode($openReport->event_data),
+        if ($report->status === 'CERRADO') {
+            return redirect()->route('reports.index')
+                ->with('info', 'La caja ya está cerrada.');
+        }
+
+        $report->update([
+            'event_type' => 'CERRADO',
+            'event_data' => json_encode([
+                'initial_balance' => $report->initial_balance,
+                'current_balance' => $report->current_balance,
+                'total_sales' => $report->total_sales,
+            ]),
         ]);
 
-        return redirect()->route('reports.closeForm')
+        UserAction::dispatch(Auth::user(), 'CLOSE_CASH_REGISTER', $report);
+
+        return redirect()->route('cash.index')
             ->with('success', 'Caja cerrada exitosamente.');
+    }
+
+    public function showSales($reportId)
+    {
+        $report = Report::find($reportId);
+
+        if (!$report) {
+            return redirect()->back()->with('error', 'Reporte no encontrado.');
+        }
+
+        $eventData = json_decode($report->event_data, true);
+
+        $saleIds = $eventData['sales'] ?? [];
+
+        $sales = Sale::whereIn('id', $saleIds)->get();
+
+        return view('reports.sales', compact('sales'));
     }
 }

@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CashController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockReportController;
 use App\Http\Controllers\SupplierController;
@@ -30,13 +32,6 @@ Route::view('/login', 'auth.login')->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-
-Route::get('/usuarios', [UserController::class, 'index'])->name('users.index');
-
-
-Route::view('/caja', 'cash.index')->name('cash.index');
-Route::view('/caja/{sale_id}/nuevo', 'cash.new')->name('cash.new');
-
 Route::resource('categories', CategoryController::class);
 Route::resource('suppliers', SupplierController::class);
 Route::resource('products', ProductController::class);
@@ -49,7 +44,8 @@ Route::get('reports/create', [ReportController::class, 'create'])->name('reports
 
 Route::post('reports', [ReportController::class, 'store'])->name('reports.store');
 
-Route::post('reports/close', [ReportController::class, 'close'])->name('reports.close');
+Route::put('reports/{id}', [ReportController::class, 'update'])->name('reports.update');
+Route::get('reports/{id}/sales', [ReportController::class, 'showSales'])->name('reports.sales');
 
 Route::get('sales/create', [SaleController::class, 'create'])->name('sales.create');
 
@@ -60,3 +56,9 @@ Route::get('sales', [SaleController::class, 'index'])->name('sales.index');
 Route::get('sales/{saleId}/tickets', [TicketController::class, 'index'])->name('tickets.index');
 
 Route::put('sales/{sale}/{status}', [SaleController::class, 'updateStatus'])->name('sales.updateStatus');
+
+Route::GET('cash', [CashController::class, 'index'])->name('cash.index');
+
+Route::resource('roles', RoleController::class);
+
+Route::resource('users', UserController::class);
