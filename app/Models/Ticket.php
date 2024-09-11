@@ -21,8 +21,8 @@ class Ticket extends Model
         'total_value' => 'decimal:2',
     ];
 
-    public function products()
+    public function product()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsTo(Product::class);
     }
 }

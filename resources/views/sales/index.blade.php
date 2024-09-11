@@ -34,12 +34,7 @@
                             <a href={{route('tickets.index', $sale->id)}} class="btn btn-secondary mx-2">Tickets</a>
 
                             @if ($sale->event_type === 'PENDIENTE')
-                                <form action="{{ route('sales.updateStatus', [$sale, 'PAGADA']) }}" method="POST"
-                                    style="display:inline;">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="btn btn-success">Marcar como Pagada</button>
-                                </form>
+                                <a href="{{route('payment.store', $sale->id)}}" type="submit" class="btn btn-success" >Marcar como Pagada</a>
                             @endif
                             @if ($sale->event_type === 'PAGADA')
                                 <form action="{{ route('sales.updateStatus', [$sale, 'DESPACHADA']) }}" method="POST"

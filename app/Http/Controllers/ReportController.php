@@ -41,8 +41,9 @@ class ReportController extends Controller
                 'initial_balance' => $initialBalance,
                 'current_balance' => $initialBalance,
                 'total_sales' => 0,
-                'sales' => []
+                'sales' => [],
             ]),
+            'created_at' => now()
         ]);
 
         UserAction::dispatch(Auth::user(), 'OPEN_CASH_REGISTER', $report);
@@ -67,11 +68,6 @@ class ReportController extends Controller
 
         $report->update([
             'event_type' => 'CERRADO',
-            'event_data' => json_encode([
-                'initial_balance' => $report->initial_balance,
-                'current_balance' => $report->current_balance,
-                'total_sales' => $report->total_sales,
-            ]),
         ]);
 
         UserAction::dispatch(Auth::user(), 'CLOSE_CASH_REGISTER', $report);

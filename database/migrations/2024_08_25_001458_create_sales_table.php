@@ -18,7 +18,7 @@ class CreateSalesTable extends Migration
             $table->string('aggregate_id');
             $table->string('event_type');
             $table->string('event_data');
-            $table->dateTime('created_at')->default(now());
+            $table->dateTime('created_at')->useCurrent();
         });
     }
 

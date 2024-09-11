@@ -64,7 +64,9 @@ class SaleController extends Controller
                     'quantity' => $totalQuantity,
                     'tickets' => $tickets
                 ]),
+                'created_at' => now()
             ]);
+
 
             UserAction::dispatch(Auth::user(), 'SALE_CREATED', $sale);
         });
@@ -86,22 +88,17 @@ class SaleController extends Controller
             return redirect()->back()->with('error', 'Estado inválido.');
         }
 
-        if ($status === 'PAGADA') {
-            $report = Report::where('event_type', 'ABIERTO')->latest()->first();
-    
-            if ($report) {
-                $eventDataSale = json_decode($sale->event_data, true);
-                $amount = $eventDataSale['amount'];
-                $eventData = json_decode($report->event_data, true);
-                $eventData['current_balance'] += $amount;
-                $eventData['total_sales'] += $amount;
+        if ($status === 'DESPACHADA') {
+            $eventData = json_decode($sale->event_data, true);
+            $ticketIds = $eventData['tickets'] ?? [];
+            $tickets = Ticket::whereIn('id', $ticketIds)->get();
 
-                array_push($eventData['sales'], $sale->id);
-    
-                $report->update([
-                    'event_data' => json_encode($eventData),
-                ]);
-            }
+            $tickets->each(function (Ticket $ticket) {
+                $product = $ticket->product;
+                $product->stock_actual -= 1;
+
+                $product->save();
+            });
         }
 
         $sale->update([

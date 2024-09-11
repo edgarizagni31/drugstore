@@ -24,12 +24,13 @@
             </thead>
             <tbody>
                 @foreach ($reports as $report)
-                    <th> {{ $report->created_at }} </th>
-                    <th> {{ $report->event_type }} </th>
-                    <th>  
-
-                        <a href={{route('reports.sales', $report->id)}} class="btn btn-secondary">Ventas</a>
-                    </th>
+                    <tr>
+                        <th> {{ $report->created_at }} </th>
+                        <th> {{ $report->event_type }} </th>
+                        <th>
+                            <a href={{ route('reports.sales', $report->id) }} class="btn btn-secondary">Ventas</a>
+                        </th>
+                    </tr>
                 @endforeach
 
 

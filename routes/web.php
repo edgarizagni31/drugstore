@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CashController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
@@ -54,6 +55,9 @@ Route::post('sales', [SaleController::class, 'store'])->name('sales.store');
 Route::get('sales', [SaleController::class, 'index'])->name('sales.index');
 
 Route::get('sales/{saleId}/tickets', [TicketController::class, 'index'])->name('tickets.index');
+Route::get('sales/{saleId}/payment', [PaymentController::class, 'create'])->name('payment.create');
+Route::post('sales/{saleId}/payment', [PaymentController::class, 'store'])->name('payment.store');
+
 
 Route::put('sales/{sale}/{status}', [SaleController::class, 'updateStatus'])->name('sales.updateStatus');
 
