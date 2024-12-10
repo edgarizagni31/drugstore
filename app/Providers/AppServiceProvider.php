@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Log;
 use NumberFormatter;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -41,5 +42,8 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('endhasPermissionsTo', function () {
             return "<?php endif; ?>";
         });
+
+        View::addNamespace('Users', base_path('app/User/Infrastructure/views'));
+        View::addNamespace('Products', base_path('app/Product/Infrastructure/views'));
     }
 }

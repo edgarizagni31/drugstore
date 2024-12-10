@@ -11,7 +11,7 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockReportController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TicketController;
-use App\Http\Controllers\UserController;
+use App\User\Infrastructure\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
