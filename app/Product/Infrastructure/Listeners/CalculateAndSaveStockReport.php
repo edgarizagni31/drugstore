@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Product\Infrastructure\Listeners;
 
-use App\Events\StockUpdate;
 use App\Events\UserAction;
 use App\Models\StockReport;
+use App\Product\Application\Events\StockUpdate;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -15,7 +15,7 @@ class CalculateAndSaveStockReport
     /**
      * Handle the event.
      *
-     * @param  \App\Events\StockUpdate  $event
+     * @param  \App\Product\Application\Events\StockUpdate  $event
      * @return void
      */
     public function handle(StockUpdate $event)

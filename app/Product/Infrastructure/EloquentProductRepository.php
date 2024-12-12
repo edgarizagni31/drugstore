@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Product\Infraestructure;
+namespace App\Product\Infrastructure;
 use App\Product\Domain\Product;
 use App\Product\Domain\ProductRepositoryInterface;
 
@@ -29,6 +29,6 @@ class EloquentProductRepository implements ProductRepositoryInterface {
 
   public function list()
   {
-    return Product::with('role')->get();
+    return Product::with(['category', 'supplier'])->get();
   }
 }

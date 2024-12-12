@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Events\StockUpdate;
 use App\Events\UserAction;
-use App\Listeners\CalculateAndSaveStockReport;
 use App\Listeners\SaveUserAction;
+use App\Product\Application\Events\StockUpdate;
+use App\Product\Infrastructure\Listeners\CalculateAndSaveStockReport;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
