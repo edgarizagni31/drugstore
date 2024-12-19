@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
-use App\Models\Sale;
+use App\Src\Sales\Domain\Sale;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller

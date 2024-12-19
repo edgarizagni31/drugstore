@@ -43,7 +43,10 @@ class AppServiceProvider extends ServiceProvider
             return "<?php endif; ?>";
         });
 
-        View::addNamespace('Users', base_path('app/User/Infrastructure/views'));
-        View::addNamespace('Products', base_path('app/Product/Infrastructure/views'));
+        View::addNamespace('Users', base_path('app/Src/Users/Infrastructure/views'));
+        View::addNamespace('Roles', base_path('app/Src/Roles/Infrastructure/views'));
+        View::addNamespace('Products', base_path('app/Src/Products/Infrastructure/views'));
+        View::addNamespace('Tickets', base_path('app/Src/Tickets/Infrastructure/views'));
+        View::addNamespace('Sales', base_path('app/Src/Sales/Infrastructure/views'));
     }
 }

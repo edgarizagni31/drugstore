@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\UserAction;
 use App\Models\Product;
 use App\Models\StockReport;
+use App\Src\Users\Application\Events\UserAction;
 use Auth;
 use Illuminate\Http\Request;
 

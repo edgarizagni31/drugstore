@@ -5,13 +5,13 @@ use App\Http\Controllers\CashController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReportController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockReportController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\TicketController;
-use App\Product\Infrastructure\ProductController;
-use App\User\Infrastructure\UserController;
+use App\Src\Sales\Infrastructure\SaleController;
+use App\Src\Tickets\Infrastructure\TicketController;
+use App\Src\Products\Infrastructure\ProductController;
+use App\Src\Roles\Infrastructure\RoleController;
+use App\Src\Users\Infrastructure\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*

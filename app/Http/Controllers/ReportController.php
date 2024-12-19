@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\UserAction;
 use App\Models\Report;
-use App\Models\Sale;
+use App\Src\Sales\Domain\Sale;
+use App\Src\Users\Application\Events\UserAction;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
